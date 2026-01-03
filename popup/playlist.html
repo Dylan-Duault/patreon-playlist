@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patreon Playlist</title>
+  <link rel="stylesheet" href="playlist.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>My Playlist</h1>
+      <div class="stats">
+        <span id="unseen-count">0 unseen</span>
+        <span class="separator">•</span>
+        <span id="seen-count">0 seen</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- Unseen Videos Section -->
+      <section class="video-section">
+        <h2>Unseen Videos</h2>
+        <div id="unseen-videos" class="video-list">
+          <div class="empty-state">
+            <p>No unseen videos yet</p>
+            <small>Add videos from Patreon messages to see them here</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seen Videos Section -->
+      <section class="video-section">
+        <h2>Seen Videos</h2>
+        <div id="seen-videos" class="video-list">
+          <div class="empty-state">
+            <p>No seen videos yet</p>
+            <small>Click on videos to mark them as seen</small>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../utils/youtube.js"></script>
+  <script src="../utils/storage.js"></script>
+  <script src="playlist.js"></script>
+</body>
+</html>
