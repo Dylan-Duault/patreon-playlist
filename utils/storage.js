@@ -110,3 +110,36 @@ async function isVideoInPlaylist(videoId) {
     return false;
   }
 }
+
+/**
+ * Get settings from storage
+ * @returns {Promise<Object>} Settings object
+ */
+async function getSettings() {
+  try {
+    const result = await browser.storage.local.get('settings');
+    return result.settings || {
+      paginationSize: 5
+    };
+  } catch (error) {
+    console.error('Error getting settings:', error);
+    return {
+      paginationSize: 5
+    };
+  }
+}
+
+/**
+ * Save settings to storage
+ * @param {Object} settings - Settings object
+ * @returns {Promise<boolean>} Success status
+ */
+async function saveSettings(settings) {
+  try {
+    await browser.storage.local.set({ settings });
+    return true;
+  } catch (error) {
+    console.error('Error saving settings:', error);
+    return false;
+  }
+}

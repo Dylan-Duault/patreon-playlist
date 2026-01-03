@@ -7,9 +7,9 @@ const unseenVideosContainer = document.getElementById('unseen-videos');
 const seenVideosContainer = document.getElementById('seen-videos');
 const unseenCountElement = document.getElementById('unseen-count');
 const seenCountElement = document.getElementById('seen-count');
+const settingsBtn = document.getElementById('settings-btn');
 
 // Pagination state
-const ITEMS_PER_PAGE = 5;
 let unseenCurrentPage = 1;
 let seenCurrentPage = 1;
 
@@ -19,9 +19,14 @@ let seenCurrentPage = 1;
 async function init() {
   await loadAndRenderPlaylist();
 
+  // Settings button click handler
+  settingsBtn.addEventListener('click', () => {
+    browser.runtime.openOptionsPage();
+  });
+
   // Listen for storage changes
   browser.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes.playlist) {
+    if (area === 'local' && (changes.playlist || changes.settings)) {
       loadAndRenderPlaylist();
     }
   });
@@ -32,6 +37,8 @@ async function init() {
  */
 async function loadAndRenderPlaylist() {
   const playlist = await getPlaylist();
+  const settings = await getSettings();
+  const itemsPerPage = settings.paginationSize || 5;
 
   // Separate seen and unseen videos
   const unseenVideos = playlist.filter(video => !video.seenAt);
@@ -42,8 +49,8 @@ async function loadAndRenderPlaylist() {
   seenCountElement.textContent = `${seenVideos.length} seen`;
 
   // Render videos with pagination
-  renderVideos(unseenVideos, unseenVideosContainer, false, unseenCurrentPage);
-  renderVideos(seenVideos, seenVideosContainer, true, seenCurrentPage);
+  renderVideos(unseenVideos, unseenVideosContainer, false, unseenCurrentPage, itemsPerPage);
+  renderVideos(seenVideos, seenVideosContainer, true, seenCurrentPage, itemsPerPage);
 }
 
 /**
@@ -52,8 +59,9 @@ async function loadAndRenderPlaylist() {
  * @param {HTMLElement} container - Container element
  * @param {boolean} isSeen - Whether these are seen videos
  * @param {number} currentPage - Current page number
+ * @param {number} itemsPerPage - Number of items per page
  */
-function renderVideos(videos, container, isSeen, currentPage) {
+function renderVideos(videos, container, isSeen, currentPage, itemsPerPage) {
   // Clear container
   container.innerHTML = '';
 
@@ -77,9 +85,9 @@ function renderVideos(videos, container, isSeen, currentPage) {
   });
 
   // Calculate pagination
-  const totalPages = Math.ceil(sortedVideos.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(sortedVideos.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
   const paginatedVideos = sortedVideos.slice(startIndex, endIndex);
 
   // Create video list container

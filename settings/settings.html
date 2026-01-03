@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patreon Playlist - Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Settings</h1>
+      <p class="subtitle">Configure your Patreon Playlist extension</p>
+    </header>
+
+    <main>
+      <!-- Pagination Settings -->
+      <section class="settings-section">
+        <h2>Display Settings</h2>
+        <div class="setting-item">
+          <label for="pagination-size">Videos per page:</label>
+          <div class="setting-control">
+            <input
+              type="number"
+              id="pagination-size"
+              min="1"
+              max="50"
+              value="5"
+            />
+            <span class="setting-description">Number of videos to show per page (1-50)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Import/Export Settings -->
+      <section class="settings-section">
+        <h2>Backup & Restore</h2>
+
+        <div class="setting-item">
+          <label>Export Playlist:</label>
+          <div class="setting-control">
+            <button id="export-btn" class="btn btn-primary">
+              Export Playlist (JSON)
+            </button>
+            <span class="setting-description">Download your playlist as a JSON file</span>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label>Import Playlist:</label>
+          <div class="setting-control">
+            <input type="file" id="import-file" accept=".json" style="display: none;">
+            <button id="import-btn" class="btn btn-secondary">
+              Choose File to Import
+            </button>
+            <span class="setting-description">Import playlist from a JSON file (merges with existing)</span>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label>Clear Playlist:</label>
+          <div class="setting-control">
+            <button id="clear-btn" class="btn btn-danger">
+              Clear All Videos
+            </button>
+            <span class="setting-description">Remove all videos from your playlist (cannot be undone)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Save Button -->
+      <div class="save-section">
+        <button id="save-btn" class="btn btn-success">Save Settings</button>
+        <span id="save-status" class="save-status"></span>
+      </div>
+    </main>
+  </div>
+
+  <script src="../utils/storage.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>
