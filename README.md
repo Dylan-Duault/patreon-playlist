@@ -169,25 +169,13 @@ cd patreon-playlist
 - Use Firefox Web Console (`F12`) on Patreon pages for content script errors
 - Check storage: `about:debugging` → Extension → Inspect → Console → `browser.storage.local.get('playlist')`
 
-## Future Enhancements
-
-Potential features for future versions:
-- Sort and filter options (by date, channel, title)
-- Search functionality
-- Tags/categories for videos
-- Watch progress tracking
-- Statistics dashboard
-- Dark mode theme
-- Bulk operations (mark all as seen, remove all seen videos)
-- Video notes/comments
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues or pull requests.
 
 ## License
 
-[Add your license here]
+ICCLEIYSIUYA (I Couldn't Care Less Even If You Stuff It Up Your Ass)
 
 ## Author
 
