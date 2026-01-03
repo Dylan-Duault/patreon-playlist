@@ -5,11 +5,14 @@ A Firefox extension that helps you collect and manage YouTube videos shared in P
 ## Features
 
 - **Automatic Detection**: Detects YouTube links in Patreon messages (`https://www.patreon.com/messages/*`)
-- **Easy Adding**: Click the inline button to add videos to your playlist
+- **Smart Button States**: Inline buttons show video status (Add to Playlist / In Playlist / Already watched)
 - **Duplicate Handling**: Warns when adding duplicate videos (allows with confirmation)
 - **Rich Metadata**: Automatically fetches video titles, thumbnails, and channel names
-- **Organized Viewing**: Separate sections for seen and unseen videos
-- **Track Progress**: Mark videos as "seen" when clicked from the playlist
+- **Organized Viewing**: Separate sections for seen and unseen videos with pagination
+- **Flexible Pagination**: Configurable videos per page (1-50) via settings
+- **Track Progress**: Mark videos as seen/unseen with dedicated buttons or by clicking
+- **Export/Import**: Backup and restore your playlist as JSON files
+- **Settings Page**: Easily accessible gear icon in playlist header
 - **Clean Interface**: Modern, intuitive design with gradient header and card-based layout
 
 ## Supported YouTube URL Formats
@@ -48,25 +51,32 @@ The extension will work without custom icons (Firefox will use a default). To ad
 ### Adding Videos to Playlist
 
 1. Visit any Patreon messages page (`https://www.patreon.com/messages/*`)
-2. YouTube links will automatically have an "Add to Playlist" button next to them
-3. Click the button to add the video to your playlist
-4. If the video is already in the playlist, you'll see "✓ In Playlist"
-5. Adding duplicates will prompt for confirmation
+2. YouTube links will automatically have a button next to them with one of three states:
+   - **"+ Add to Playlist"** (Blue) - Video not in playlist
+   - **"✓ In Playlist"** (Green) - Video added but not watched
+   - **"Already watched"** (Gray) - Video has been watched
+3. Click the button to add videos to your playlist
+4. Adding duplicates will prompt for confirmation
 
 ### Viewing Your Playlist
 
 1. Click the extension icon in your browser toolbar
 2. The playlist page will open showing:
-   - **Unseen Videos**: Videos you haven't clicked yet
-   - **Seen Videos**: Videos you've already watched
-3. Click any video to open it in a new tab and mark it as "seen"
-4. Use the "Remove" button to delete videos from the playlist
+   - **Unseen Videos**: Videos you haven't watched yet (paginated)
+   - **Seen Videos**: Videos you've already watched (paginated)
+3. Click any video card to open it in a new tab and mark it as "seen"
+4. Use pagination controls to navigate between pages (Previous/Next)
+5. Click the ⚙ gear icon in the header to access settings
 
 ### Managing Videos
 
-- **Mark as Seen**: Click on any unseen video from the playlist page
+- **Mark as Seen/Unseen**: Use the "Mark as seen" or "Mark as unseen" button on each video card
 - **Remove Videos**: Click the "Remove" button on any video card
 - **View Stats**: See total unseen and seen video counts in the header
+- **Export Playlist**: Settings → Export Playlist (JSON) to backup your collection
+- **Import Playlist**: Settings → Import to restore or merge playlists
+- **Configure Pagination**: Settings → Change videos per page (1-50)
+- **Clear Playlist**: Settings → Clear All Videos (with confirmation)
 
 ## Project Structure
 
@@ -79,17 +89,21 @@ patreon-playlist/
 │   ├── playlist.html      # Playlist page UI
 │   ├── playlist.js        # Playlist logic
 │   └── playlist.css       # Styling
+├── settings/
+│   ├── settings.html      # Settings page UI
+│   ├── settings.js        # Settings logic
+│   └── settings.css       # Settings styling
 ├── utils/
 │   ├── storage.js         # Storage helper functions
 │   └── youtube.js         # YouTube URL parsing utilities
-└── icons/                 # Extension icons (add your own)
+└── icons/                 # Extension icons
 ```
 
 ## Technical Details
 
 ### Storage
 
-Videos are stored using Firefox's `browser.storage.local` API with the following structure:
+Data is stored using Firefox's `browser.storage.local` API with the following structure:
 
 ```json
 {
@@ -104,7 +118,10 @@ Videos are stored using Firefox's `browser.storage.local` API with the following
       "addedAt": "2026-01-03T10:30:00Z",
       "seenAt": null
     }
-  ]
+  ],
+  "settings": {
+    "paginationSize": 5
+  }
 }
 ```
 
@@ -155,13 +172,14 @@ cd patreon-playlist
 ## Future Enhancements
 
 Potential features for future versions:
-- Export/import playlist as JSON or CSV
 - Sort and filter options (by date, channel, title)
 - Search functionality
 - Tags/categories for videos
 - Watch progress tracking
 - Statistics dashboard
 - Dark mode theme
+- Bulk operations (mark all as seen, remove all seen videos)
+- Video notes/comments
 
 ## Contributing
 
